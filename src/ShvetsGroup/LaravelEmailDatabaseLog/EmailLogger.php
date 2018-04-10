@@ -36,13 +36,12 @@ class EmailLogger
      */
     function attachmentFilename($message)
     {
-        if(!$message->getChildren())
-            return null;
-
-        $filename = "";
+        $filename = null;
 
         foreach ($message->getChildren() as $child) {
-            $filename .= str_replace('attachment; filename=', null, $child->getHeaders()->get('content-disposition')->getFieldBody()).";";
+            $disposition = $child->getHeaders()->get('content-disposition');
+            if(null !== $disposition)
+                $filename .= $disposition->getParameter('filename').PHP_EOL;
         }
 
         return $filename;
