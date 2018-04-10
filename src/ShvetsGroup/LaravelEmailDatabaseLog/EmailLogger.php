@@ -25,7 +25,7 @@ class EmailLogger
             'subject' => $message->getSubject(),
             'body' => $message->getBody(),
             'headers' => (string)$message->getHeaders(),
-            'attachments' => $this->attachementFilename($message),
+            'attachments' => $this->attachmentFilename($message),
         ]);
     }
 
@@ -39,13 +39,13 @@ class EmailLogger
         if(!$message->getChildren())
             return null;
 
-        $string = "";
+        $filename = "";
 
         foreach ($message->getChildren() as $child) {
-            $string .= str_replace('attachment; filename=', null, $child->getHeaders()->get('content-disposition')->getFieldBody()).";";
+            $filename .= str_replace('attachment; filename=', null, $child->getHeaders()->get('content-disposition')->getFieldBody()).";";
         }
 
-        return $string;
+        return $filename;
     }
 
     /**
